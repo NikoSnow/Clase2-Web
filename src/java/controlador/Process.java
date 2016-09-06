@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controlador;
 
 import java.io.IOException;
@@ -11,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import persistencia.BaseDatos;
 
 /**
  *
@@ -34,40 +30,46 @@ public class Process extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String first_name = request.getParameter("first_name");
-            String last_name = request.getParameter("last_name");
-            String password = request.getParameter("password");
-            String description = request.getParameter("description");
-            String maths = request.getParameter("M");        
-            String physics = request.getParameter("F");         
-            
-            String subject = request.getParameter("subject");
-            String dropdown = request.getParameter("dropdown");
-            String pagename = request.getParameter("pagename");
-            String [] cars = request.getParameterValues("car");
+            String nombre = request.getParameter("nombre");
+            String cedula = request.getParameter("cedula");
+            String programa = request.getParameter("programa");
+            String cat = request.getParameter("cat");
+            String tp = request.getParameter("tp");
+            String dropdown = request.getParameter("dropdown");        
+            String [] equipos = request.getParameterValues("equipo");
+            String fechaprestamo = request.getParameter("fechaprestamo");
+            String fecharetorno = request.getParameter("fecharetorno");
+            //String pagename = request.getParameter("pagename");
+            StringBuffer cadena2 = new StringBuffer();
+            for (int x=0;x<equipos.length;x++){
+                cadena2 = cadena2.append(equipos[x]+",");
+}
+            String cadena = nombre + "," +cedula + "," + programa + "," + cat + "," + tp + "," + dropdown + "," + cadena2  + fechaprestamo + "," + fecharetorno;
+            BaseDatos basdat = new BaseDatos();
+            basdat.persistir(cadena);
+                                
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Prueba como capturar datos</title>");            
+            out.println("<title>Confirmacion de prestamo</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Formulario, datos recibidos " + request.getContextPath() + "</h1>");
-            out.println("<h1>" + first_name + "</h1>");
-            out.println("<h1>" + last_name + "</h1>");
-            out.println("<h1>" + password + "</h1>");
-            out.println("<h1>" + description + "</h1>");
-            out.println("<h1>" + maths + "</h1>");
-            out.println("<h1>" + physics + "</h1>");
-            out.println("<h1>" + subject + "</h1>");
-            out.println("<h1>" + dropdown + "</h1>");
-            out.println("<h1>" + pagename + "</h1>");
-            
-            for(String car: cars)
-                out.println("<h1>" + car + "</h1>");
-            
+            out.println("<h1>Formulario de prestamo diligenciado</h1>");
+            out.println("<h4>Prestamo a nombre de " + nombre + "</h4>");
+            out.println("<h4>Tipo de practica: " + tp + "</h4>");
+            out.println("<h4>Se va a realizar en el salon: " + dropdown + "</h4>");
+            out.println("<h3>Los equipos que ha solicitado son</h3>");
+                out.println("<ul>");
+                for(String equipo: equipos)
+                out.println("<li>" + equipo + "</li>");
+                out.println("</ul>");
+            out.println("<h3>Recuerde que debe devolver los equipos el</h3>");
+            out.println("<h4>" + fecharetorno + "</h4>");
             out.println("</body>");
             out.println("</html>");
+            
+                
         }
     }
 
